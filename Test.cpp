@@ -1,0 +1,93 @@
+ /* 
+
+ *
+ * TEST FOR SNOWMAN.CPP
+ *
+ * AUTHOR: Shavit Luzon
+ *
+ * Date: 2021-03
+ *
+
+*/
+
+#include "Board.hpp"
+#include "Direction.hpp"
+#include "doctest.h"
+#include <stdexcept>
+#include <iostream>
+#include <cmath>
+#include "doctest.h"
+#include <string>
+using namespace std;
+using namespace ariel; 
+
+/* 
+  Functions to check: read, post.
+ */
+
+TEST_CASE("Overwriting existing posts") {
+
+    ariel::Board board;
+
+    board.post(/*row=*/100, /*column=*/200, Direction::Horizontal, "abcd");
+	CHECK(board.read(/*row=*/99, /*column=*/201, Direction::Vertical, /*length=*/3) == "_b_"); 
+	// prints "_b_" (starts at row 99 which is empty; then at row 100 there is "b"; then row 101 is empty again).
+
+	board.post(/*row=*/99, /*column=*/202, Direction::Vertical, "xyz");
+	CHECK(board.read(/*row=*/100, /*column=*/200, Direction::Horizontal, /*length=*/6)== "abyd__");  
+	// prints "abyd__" (First letters are ab; then y from the "xyz"; then d; then two empty cells).
+
+    board.post(/*row=*/0, /*column=*/0, Direction::Vertical, "11111");
+    board.post(/*row=*/1, /*column=*/0, Direction::Vertical, "2");
+    board.post(/*row=*/2, /*column=*/0, Direction::Vertical, "3");
+
+	CHECK(board.read(/*row=*/0, /*column=*/0, Direction::Vertical, /*length=*/5)== "12311");  
+    board.post(/*row=*/4, /*column=*/0, Direction::Vertical, "45");
+
+    board.post(/*row=*/0, /*column=*/0, Direction::Vertical, "12345");
+
+ 
+}
+
+TEST_CASE("Not enough space for the required word to be posted- out of range") {
+    ariel::Board board;
+
+	CHECK_THROWS_AS(board.post(/*row=*/0, /*column=*/65535, Direction::Vertical, "12345"), out_of_range);  
+	CHECK_THROWS_AS(board.post(/*row=*/65535, /*column=*/65535, Direction::Vertical, "12345678910"), out_of_range);  
+	CHECK_THROWS_AS(board.post(/*row=*/0, /*column=*/65535, Direction::Vertical, "123"), out_of_range);  
+	CHECK_THROWS_AS(board.post(/*row=*/65535, /*column=*/65535, Direction::Vertical, "12"), out_of_range);  
+	CHECK_THROWS_AS(board.post(/*row=*/65535, /*column=*/65535, Direction::Vertical, "1"), out_of_range);  
+	CHECK_THROWS_AS(board.post(/*row=*/65533, /*column=*/65535, Direction::Vertical, "123456"), out_of_range);  
+	CHECK_THROWS_AS(board.post(/*row=*/65532, /*column=*/0, Direction::Vertical, "1234567"), out_of_range);  
+	CHECK_THROWS_AS(board.post(/*row=*/65531, /*column=*/65535, Direction::Vertical, "12345678"), out_of_range);  
+	CHECK_THROWS_AS(board.post(/*row=*/65530, /*column=*/65535, Direction::Vertical, "12"), out_of_range);  
+	CHECK_THROWS_AS(board.post(/*row=*/65534, /*column=*/0, Direction::Vertical, "12"), out_of_range);  
+}
+
+
+TEST_CASE("Word cannot be read from the location- out of range") {
+    ariel::Board board;
+
+	CHECK_THROWS_AS(board.read(/*row=*/0, /*column=*/65535, Direction::Vertical, /*length=*/5), out_of_range);  
+	CHECK_THROWS_AS(board.read(/*row=*/65535, /*column=*/65535, Direction::Vertical, /*length=*/45), out_of_range);  
+	CHECK_THROWS_AS(board.read(/*row=*/0, /*column=*/65535, Direction::Vertical, /*length=*/3), out_of_range);  
+	CHECK_THROWS_AS(board.read(/*row=*/65535, /*column=*/0, Direction::Vertical, /*length=*/2), out_of_range);  
+	CHECK_THROWS_AS(board.read(/*row=*/65535, /*column=*/65535, Direction::Vertical, /*length=*/1), out_of_range);  
+	CHECK_THROWS_AS(board.read(/*row=*/65533, /*column=*/0, Direction::Vertical, /*length=*/5), out_of_range);  
+	CHECK_THROWS_AS(board.read(/*row=*/65532, /*column=*/0, Direction::Vertical, /*length=*/5), out_of_range);  
+	CHECK_THROWS_AS(board.read(/*row=*/65531, /*column=*/65535, Direction::Vertical, /*length=*/5), out_of_range);  
+	CHECK_THROWS_AS(board.read(/*row=*/65530, /*column=*/65535, Direction::Vertical, /*length=*/25), out_of_range);  
+	CHECK_THROWS_AS(board.read(/*row=*/65542, /*column=*/0, Direction::Vertical, /*length=*/55), out_of_range);  
+}
+
+TEST_CASE("Good inputs- check the outputs") {
+
+
+}
+
+TEST_CASE("Bad inputs- look for exceptions") {
+
+    /* Add more checks here */
+}
+
+/* add more test cases here */
