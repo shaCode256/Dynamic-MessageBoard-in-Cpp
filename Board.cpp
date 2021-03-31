@@ -33,7 +33,7 @@ void Board::post(unsigned int row, unsigned int col, ariel::Direction direction,
     {
     case (Direction::Horizontal):
     { //left to right- horizontal
-        if (long(row+length) > usMaxSize ){
+        if (long(row)+length > usMaxSize ){
             throw exception(); //check that
         }
         if (col+length > colMaxVal)
@@ -50,7 +50,7 @@ void Board::post(unsigned int row, unsigned int col, ariel::Direction direction,
     }
     case (Direction::Vertical):
     {
-        if (long(col+length) > usMaxSize ){
+        if (long(col)+length > usMaxSize ){
             throw exception(); //check that
         }
         if (row+length > rowMaxVal)
