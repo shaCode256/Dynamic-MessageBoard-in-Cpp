@@ -10,7 +10,7 @@
 using namespace ariel;
 using namespace std;
 
-const unsigned int usMaxSize= 4294967295;
+const unsigned int usMaxSize = 4294967295;
 
 unsigned int rowMinVal = usMaxSize;
 unsigned int rowMaxVal = 0;
@@ -19,7 +19,7 @@ unsigned int colMaxVal = 0;
 
 void Board::post(unsigned int row, unsigned int col, ariel::Direction direction, string str)
 {
-    unsigned int length= str.length();
+    unsigned int length = str.length();
     if (row < rowMinVal)
     {
         rowMinVal = row;
@@ -32,12 +32,13 @@ void Board::post(unsigned int row, unsigned int col, ariel::Direction direction,
     {
     case (Direction::Horizontal):
     { //left to right- horizontal
-        if (long(row)+length > usMaxSize ){
+        if (long(row) + length - 1 > usMaxSize)
+        {
             throw exception(); //check that
         }
-        if (col+length > colMaxVal)
+        if (col + length - 1 > colMaxVal)
         {
-            colMaxVal = col+length;
+            colMaxVal = col + length - 1;
         }
 
         for (unsigned int i = 0; i < length; i++)
@@ -49,13 +50,14 @@ void Board::post(unsigned int row, unsigned int col, ariel::Direction direction,
     }
     case (Direction::Vertical):
     {
-        if (long(col)+length > usMaxSize ){
+        if (long(col) + length - 1 > usMaxSize)
+        {
             throw exception(); //check that
         }
-        if (row+length > rowMaxVal)
-            {
-                rowMaxVal = row+length; 
-            }
+        if (row + length - 1 > rowMaxVal)
+        {
+            rowMaxVal = row + length - 1;
+        }
         for (unsigned int i = 0; i < length; i++)
         {
             charsMap[row][col] = str.at(i);
@@ -68,8 +70,9 @@ void Board::post(unsigned int row, unsigned int col, ariel::Direction direction,
     }
 }
 
- string Board::read(unsigned int row, unsigned int col, ariel::Direction direction, unsigned int length)
+string Board::read(unsigned int row, unsigned int col, ariel::Direction direction, unsigned int length)
 {
+    fill_empty_cells();
     string word;
     switch (direction)
     {
@@ -77,7 +80,7 @@ void Board::post(unsigned int row, unsigned int col, ariel::Direction direction,
     { //left to right- horizontal
         for (unsigned int i = 0; i < length; i++)
         {
-            word+= charsMap[row][col];
+            word += charsMap[row][col];
             col++;
         }
         break;
@@ -86,7 +89,7 @@ void Board::post(unsigned int row, unsigned int col, ariel::Direction direction,
     {
         for (unsigned int i = 0; i < length; i++)
         {
-            word = word+= charsMap[row][col];
+            word = word += charsMap[row][col];
             row++;
         }
         break;
@@ -99,60 +102,53 @@ void Board::post(unsigned int row, unsigned int col, ariel::Direction direction,
 
 void Board::show()
 {
-    // if(rowMinVal > 0){
-    //     cout << "_";
-    // }
-    // if(colMinVal > 0){
-    //     for (unsigned int i = 0; i < rowMaxVal; i++)
-    //     {
-    //         cout << "_" << "\n";
-    //     }
-
-    for (unsigned int row = rowMinVal-1; row <= rowMaxVal+1; row++)
+    fill_empty_cells();
+    //printing out the whole charsMap
+    for (unsigned int row = rowMinVal - 1; row <= rowMaxVal + 1; row++)
     {
-        //cout << "colMaxVal is: " << colMaxVal << "\n"; 
-        for (unsigned int col = colMinVal-2; col <= colMaxVal+2; col++)
+        for (unsigned int col = colMinVal - 2; col <= colMaxVal + 2; col++)
+        {
+            cout << charsMap[row][col];
+        }
+        // if (row < rowMaxVal+1)
+        // {
+        cout << "\n"; //end of this line
+        // }
+    }
+
+    // cout << "\n"
+    // "maxcol is "
+    // << colMaxVal << "\n";
+    // cout << "mincol is " << colMinVal << "\n";
+    // cout << "maxrow is " << rowMaxVal << "\n";
+    // cout << "minrow is " << rowMinVal << "\n";
+}
+
+void Board::fill_empty_cells(){
+    //filling the empty spaces
+    for (unsigned int row = rowMinVal - 1; row <= rowMaxVal + 1; row++)
+    {
+        //cout << "colMaxVal is: " << colMaxVal << "\n";
+        for (unsigned int col = colMinVal - 2; col <= colMaxVal + 2; col++)
         {
             if (charsMap.find(row) == charsMap.end()) // row not found
             {
-                cout  << "_"; //will do it for all the row: will do all columns
+                charsMap[row][col] = '_'; //will do it for all the row: will do all columns
             }
             else
             {                                                       //row is found, check if col
                 if (charsMap[row].find(col) == charsMap[row].end()) //if col not found
                 {
-                    cout << "_";
-                }
-                else
-                { //yes col & yes row!
-                    cout << charsMap[row][col];
+                    charsMap[row][col] = '_';
                 }
             }
         }
-        if(row< rowMaxVal){
-            cout << "\n"; //end of this line
-        }
     }
-
-    cout<< "\n" "maxcol is "<< colMaxVal << "\n";
-    cout << "mincol is "<< colMinVal << "\n";
-    cout<< "maxrow is "<< rowMaxVal << "\n";
-    cout << "minrow is "<< rowMinVal << "\n";
-
 }
 
-// map<unsigned int, map<unsigned int, char>>::iterator it;
-// for (map<unsigned int, map<unsigned int, char>>::iterator it = charsMap.begin(); it != charsMap.end(); ++it)
-// {
-//     map<unsigned int, char> &internal_map = it->second;
-//     for (map<unsigned int, char>::iterator it2 = internal_map.begin(); it2 != internal_map.end(); ++it2)
-//     {
-//         if (it2 != internal_map.begin())
-//             cout << it2->second; //which is the char
-//     }
-//     cout << endl;
-// }
-//}
 
+
+
+// Some reference:
 // https://stackoverflow.com/questions/26281979/c-loop-through-map
-//https://stackoverflow.com/questions/22889347/how-can-i-print-the-content-of-mapstring-mapint-int-to-cout
+// https://stackoverflow.com/questions/22889347/how-can-i-print-the-content-of-mapstring-mapint-int-to-cout

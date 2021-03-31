@@ -19,6 +19,8 @@ using namespace std;
             void post(unsigned int row, unsigned int col, Direction direction, string str);
             string read(unsigned int row, unsigned int col, Direction direction, unsigned int length);
             void show();
+            void fill_empty_cells();
+
     };
 
 }
