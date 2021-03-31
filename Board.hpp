@@ -1,6 +1,11 @@
 #pragma once
 #include <string>
 #include "Direction.hpp"
+#include <stdexcept>
+#include <map>
+#include <iostream>
+#include <cassert>
+
 using ariel::Direction;
 
 namespace ariel{
@@ -8,11 +13,14 @@ namespace ariel{
 using namespace std;
 
     class Board{
+        private:
+            map<unsigned int, map<unsigned int, char>> charsMap;
         public:
-        void post(unsigned int, unsigned int, Direction, string);
-        string read(unsigned int, unsigned int, Direction, unsigned int);
-        void show();
+            void post(unsigned int row, unsigned int col, Direction direction, string str);
+            string read(unsigned int row, unsigned int col, Direction direction, unsigned int length);
+            void show();
     };
+
 }
 
 	// board.post(/*row=*/100, /*column=*/200, Direction::Horizontal, "abcd");

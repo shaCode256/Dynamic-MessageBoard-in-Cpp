@@ -24,10 +24,10 @@ int main() {
 
 	cout << "now showing the board \n";
 	board.show(); // shows the board in a reasonable way. For example:
-		//    98:  _________
+		//    98   _________
 		//    99:  ____x____
 		//    100: __abyd___
 		//    101: ____z____
 		//    102: _________
-}
+}                 
 

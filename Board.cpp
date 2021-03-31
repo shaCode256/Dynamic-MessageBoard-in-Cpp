@@ -12,7 +12,6 @@ using namespace std;
 
 const unsigned int usMaxSize= 4294967295;
 
-map<unsigned int, map<unsigned int, char>> charsMap;
 unsigned int rowMinVal = usMaxSize;
 unsigned int rowMaxVal = 0;
 unsigned int colMinVal = usMaxSize;
@@ -109,10 +108,10 @@ void Board::show()
     //         cout << "_" << "\n";
     //     }
 
-    for (unsigned int row = rowMinVal; row <= rowMaxVal; row++)
+    for (unsigned int row = rowMinVal-1; row <= rowMaxVal+1; row++)
     {
-     //   cout << row << ": ";
-        for (unsigned int col = colMinVal; col <= colMaxVal; col++)
+        //cout << "colMaxVal is: " << colMaxVal << "\n"; 
+        for (unsigned int col = colMinVal-2; col <= colMaxVal+2; col++)
         {
             if (charsMap.find(row) == charsMap.end()) // row not found
             {
@@ -130,7 +129,9 @@ void Board::show()
                 }
             }
         }
-        cout << "\n"; //end of this line
+        if(row< rowMaxVal){
+            cout << "\n"; //end of this line
+        }
     }
 
     cout<< "\n" "maxcol is "<< colMaxVal << "\n";
