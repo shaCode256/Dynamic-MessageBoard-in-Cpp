@@ -12,7 +12,6 @@ using namespace std;
         void post(unsigned int, unsigned int, Direction, string);
         string read(unsigned int, unsigned int, Direction, unsigned int);
         void show();
-
     };
 }
 

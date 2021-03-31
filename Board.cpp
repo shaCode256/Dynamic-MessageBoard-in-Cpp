@@ -71,7 +71,7 @@ void Board::post(unsigned int row, unsigned int col, ariel::Direction direction,
 
  string Board::read(unsigned int row, unsigned int col, ariel::Direction direction, unsigned int length)
 {
-    string word ="";
+    string word;
     switch (direction)
     {
     case (Direction::Horizontal):
