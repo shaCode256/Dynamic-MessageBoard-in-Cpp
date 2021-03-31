@@ -44,8 +44,12 @@ TEST_CASE("Overwriting existing posts") {
 	CHECK(board.read(/*row=*/0, /*column=*/0, Direction::Vertical, /*length=*/5)== "12311");  
     board.post(/*row=*/4, /*column=*/0, Direction::Vertical, "45");
 
+	CHECK(board.read(/*row=*/0, /*column=*/0, Direction::Vertical, /*length=*/1)== "1");  
+	CHECK(board.read(/*row=*/0, /*column=*/0, Direction::Vertical, /*length=*/2)== "12");  
+	CHECK(board.read(/*row=*/0, /*column=*/0, Direction::Vertical, /*length=*/3)== "123");  
+	CHECK(board.read(/*row=*/0, /*column=*/0, Direction::Vertical, /*length=*/4)== "1231");  
     board.post(/*row=*/0, /*column=*/0, Direction::Vertical, "12345");
-
+	CHECK(board.read(/*row=*/0, /*column=*/0, Direction::Vertical, /*length=*/5)== "12345");  
  
 }
 
@@ -80,14 +84,18 @@ TEST_CASE("Word cannot be read from the location- out of range") {
 	CHECK_THROWS_AS(board.read(/*row=*/65542, /*column=*/0, Direction::Vertical, /*length=*/55), out_of_range);  
 }
 
-TEST_CASE("Good inputs- check the outputs") {
-
-
+TEST_CASE("Reading a 'random' empty place in the board") {
+	ariel::Board board;
+	CHECK(board.read(/*row=*/0, /*column=*/0, Direction::Vertical, /*length=*/4)== "____");  
+	CHECK(board.read(/*row=*/30, /*column=*/0, Direction::Vertical, /*length=*/3)== "___");  
+	CHECK(board.read(/*row=*/6, /*column=*/5, Direction::Vertical, /*length=*/2)== "__");
+	CHECK(board.read(/*row=*/10, /*column=*/0, Direction::Vertical, /*length=*/4)== "____");  
+	CHECK(board.read(/*row=*/20, /*column=*/0, Direction::Vertical, /*length=*/3)== "___");  
+	CHECK(board.read(/*row=*/50, /*column=*/5, Direction::Vertical, /*length=*/2)== "__");  
+	CHECK(board.read(/*row=*/0, /*column=*/6, Direction::Vertical, /*length=*/4)== "____");  
+	CHECK(board.read(/*row=*/40, /*column=*/7, Direction::Vertical, /*length=*/3)== "___");  
+	CHECK(board.read(/*row=*/6, /*column=*/89, Direction::Vertical, /*length=*/2)== "__");  
+	CHECK(board.read(/*row=*/17, /*column=*/0, Direction::Vertical, /*length=*/4)== "____");  
+	CHECK(board.read(/*row=*/30, /*column=*/9, Direction::Vertical, /*length=*/3)== "___");  
+	CHECK(board.read(/*row=*/6, /*column=*/95, Direction::Vertical, /*length=*/2)== "__");    
 }
-
-TEST_CASE("Bad inputs- look for exceptions") {
-
-    /* Add more checks here */
-}
-
-/* add more test cases here */
