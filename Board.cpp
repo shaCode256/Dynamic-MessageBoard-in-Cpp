@@ -32,16 +32,16 @@ void Board::post(unsigned int row, unsigned int col, ariel::Direction direction,
     {
     case (Direction::Horizontal):
     { //left to right- horizontal
-        if (long(row) + length - 1 > usMaxSize)
+        if (long(row) + length - 1 > usMaxSize) //check that the word can fit in the board
         {
-            throw exception(); //check that
+            throw exception(); 
         }
-        if (col + length - 1 > colMaxVal)
+        if (col + length - 1 > colMaxVal) //update colMaxVal
         {
             colMaxVal = col + length - 1;
         }
 
-        for (unsigned int i = 0; i < length; i++)
+        for (unsigned int i = 0; i < length; i++)//insert the word in the map
         {
             charsMap[row][col] = str.at(i);
             col++;
@@ -50,22 +50,21 @@ void Board::post(unsigned int row, unsigned int col, ariel::Direction direction,
     }
     case (Direction::Vertical):
     {
-        if (long(col) + length - 1 > usMaxSize)
+        if (long(col) + length - 1 > usMaxSize) //check that the word can fit in the board
         {
             throw exception(); //check that
         }
-        if (row + length - 1 > rowMaxVal)
+        if (row + length - 1 > rowMaxVal)//update the rowMaxVal
         {
             rowMaxVal = row + length - 1;
         }
-        for (unsigned int i = 0; i < length; i++)
+        for (unsigned int i = 0; i < length; i++)//insert the word in the map
         {
             charsMap[row][col] = str.at(i);
             row++;
         }
         break;
     }
-        //else:
         throw exception(); //illegal direction
     }
 }
@@ -78,23 +77,30 @@ string Board::read(unsigned int row, unsigned int col, ariel::Direction directio
     {
     case (Direction::Horizontal):
     { //left to right- horizontal
+        if (long(row) + length - 1 > usMaxSize) //check that reading in in the board
+        {
+            throw exception(); 
+        }
         for (unsigned int i = 0; i < length; i++)
         {
-            word += charsMap[row][col];
+            word += 0== charsMap[row][col] ? '_' : charsMap[row][col];
             col++;
         }
         break;
     }
     case (Direction::Vertical):
     {
+            if (long(col) + length - 1 > usMaxSize) //check that the reading in the board
+        {
+            throw exception(); //check that
+        }
         for (unsigned int i = 0; i < length; i++)
         {
-            word = word += charsMap[row][col];
+            word += 0== charsMap[row][col] ? '_' : charsMap[row][col];
             row++;
         }
         break;
     }
-        //else:
         throw exception(); //illegal direction
     }
     return word;
@@ -103,32 +109,31 @@ string Board::read(unsigned int row, unsigned int col, ariel::Direction directio
 void Board::show()
 {
     fill_empty_cells();
-    //printing out the whole charsMap
-    for (unsigned int row = rowMinVal - 1; row <= rowMaxVal + 1; row++)
-    {
-        for (unsigned int col = colMinVal - 2; col <= colMaxVal + 2; col++)
-        {
-            cout << charsMap[row][col];
+    
+        for(unsigned int printRow= colMinVal; printRow<= colMaxVal+4; printRow++ ){ //print first row
+            cout << "_";
         }
-        // if (row < rowMaxVal+1)
-        // {
-        cout << "\n"; //end of this line
-        // }
-    }
+        cout << "\n";
+        for (unsigned int row = rowMinVal; row <= rowMaxVal; row++)
+        {
+            cout << "__"; //print first __ to "add 2 columns"
+            for (unsigned int col = colMinVal; col <= colMaxVal; col++)
+            {
+                cout << charsMap[row][col];
+            }
+            cout << "__"; //print first __ to "add 2 columns"
+            cout << "\n"; //end of this line
+        }
 
-    // cout << "\n"
-    // "maxcol is "
-    // << colMaxVal << "\n";
-    // cout << "mincol is " << colMinVal << "\n";
-    // cout << "maxrow is " << rowMaxVal << "\n";
-    // cout << "minrow is " << rowMinVal << "\n";
+        for(unsigned int printRow= colMinVal; printRow<= colMaxVal+4; printRow++ ){ //print last row
+            cout << "_";
+        }
 }
 
 void Board::fill_empty_cells(){
     //filling the empty spaces
     for (unsigned int row = rowMinVal - 1; row <= rowMaxVal + 1; row++)
     {
-        //cout << "colMaxVal is: " << colMaxVal << "\n";
         for (unsigned int col = colMinVal - 2; col <= colMaxVal + 2; col++)
         {
             if (charsMap.find(row) == charsMap.end()) // row not found
