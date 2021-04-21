@@ -40,7 +40,10 @@ void Board::post(unsigned int row, unsigned int col, ariel::Direction direction,
         {
             colMaxVal = col + length - 1;
         }
-
+        if (long(col) + length - 1 > usMaxSize) //check that the word can fit in the board
+        {
+            throw exception(); //check that
+        }
         for (unsigned int i = 0; i < length; i++)//insert the word in the map
         {
             charsMap[row][col] = str.at(i);
@@ -53,6 +56,10 @@ void Board::post(unsigned int row, unsigned int col, ariel::Direction direction,
         if (long(col) + length - 1 > usMaxSize) //check that the word can fit in the board
         {
             throw exception(); //check that
+        }
+        if (col + length - 1 > colMaxVal) //update colMaxVal
+        {
+            colMaxVal = col + length - 1;
         }
         if (row + length - 1 > rowMaxVal)//update the rowMaxVal
         {
