@@ -32,7 +32,7 @@ void Board::post(unsigned int row, unsigned int col, ariel::Direction direction,
     {
     case (Direction::Horizontal):
     { //left to right- horizontal
-        if (long(row) + length - 1 > usMaxSize) //check that the word can fit in the board
+        if (long(col) + length - 1 > usMaxSize) //check that the word can fit in the board
         {
             throw exception(); 
         }
@@ -40,9 +40,13 @@ void Board::post(unsigned int row, unsigned int col, ariel::Direction direction,
         {
             colMaxVal = col + length - 1;
         }
-        if (long(col) + length - 1 > usMaxSize) //check that the word can fit in the board
+        if (long(row) > usMaxSize) //check that the row is in the board
         {
             throw exception(); //check that
+        }
+        if (row > rowMaxVal) //update rowMaxVal
+        {
+            rowMaxVal = row;
         }
         for (unsigned int i = 0; i < length; i++)//insert the word in the map
         {
@@ -53,14 +57,18 @@ void Board::post(unsigned int row, unsigned int col, ariel::Direction direction,
     }
     case (Direction::Vertical):
     {
-        if (long(col) + length - 1 > usMaxSize) //check that the word can fit in the board
+        if (long(row) + length - 1 > usMaxSize) //check that the word can fit in the board
         {
             throw exception(); //check that
         }
-        if (col + length - 1 > colMaxVal) //update colMaxVal
+        if (col > colMaxVal) //update colMaxVal
         {
-            colMaxVal = col + length - 1;
+            colMaxVal = col;
         }
+        if (long(col) > usMaxSize) //check that the col is in the board
+        {
+            throw exception(); //check that
+        }        
         if (row + length - 1 > rowMaxVal)//update the rowMaxVal
         {
             rowMaxVal = row + length - 1;
@@ -78,7 +86,6 @@ void Board::post(unsigned int row, unsigned int col, ariel::Direction direction,
 
 string Board::read(unsigned int row, unsigned int col, ariel::Direction direction, unsigned int length)
 {
-    fill_empty_cells();
     string word;
     switch (direction)
     {
@@ -116,32 +123,22 @@ string Board::read(unsigned int row, unsigned int col, ariel::Direction directio
 void Board::show()
 {
     fill_empty_cells();
-    
-        for(unsigned int printRow= colMinVal; printRow<= colMaxVal+4; printRow++ ){ //print first row
-            cout << "_";
-        }
         cout << "\n";
         for (unsigned int row = rowMinVal; row <= rowMaxVal; row++)
         {
-            cout << "__"; //print first __ to "add 2 columns"
             for (unsigned int col = colMinVal; col <= colMaxVal; col++)
             {
                 cout << charsMap[row][col];
             }
-            cout << "__"; //print first __ to "add 2 columns"
             cout << "\n"; //end of this line
-        }
-
-        for(unsigned int printRow= colMinVal; printRow<= colMaxVal+4; printRow++ ){ //print last row
-            cout << "_";
         }
 }
 
 void Board::fill_empty_cells(){
     //filling the empty spaces
-    for (unsigned int row = rowMinVal - 1; row <= rowMaxVal + 1; row++)
+    for (unsigned int row = rowMinVal; row <= rowMaxVal; row++)
     {
-        for (unsigned int col = colMinVal - 2; col <= colMaxVal + 2; col++)
+        for (unsigned int col = colMinVal; col <= colMaxVal; col++)
         {
             if (charsMap.find(row) == charsMap.end()) // row not found
             {
@@ -157,10 +154,3 @@ void Board::fill_empty_cells(){
         }
     }
 }
-
-
-
-
-// Some reference:
-// https://stackoverflow.com/questions/26281979/c-loop-through-map
-// https://stackoverflow.com/questions/22889347/how-can-i-print-the-content-of-mapstring-mapint-int-to-cout
